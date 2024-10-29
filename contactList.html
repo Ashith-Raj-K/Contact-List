@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+    <style>
+        .name, .number, .button, .showContact{
+        margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="contactForm">
+    <div class="name">
+        <input type="text" id="contactName" placeholder="enter the Name">
+    </div>
+    <div class="number">
+        <input type="number" id="number" placeholder="enter the contact number">
+    </div>
+    <div class="button">
+        <input type="submit" onclick="fetchData()">        
+        <input type="submit" onclick="displayData()" value="showContact">
+    </div>
+    <div class="showContact">
+    </div>
+</div>
+    <script>
+        let contactList = []
+        let editIndex = -1
+        function fetchData(){
+           const contactName = document.getElementById('contactName').value
+           const number =  parseInt(document.getElementById('number').value)
+           if(editIndex !== -1){
+            contactList[editIndex] = {name:contactName, num:number}
+            editIndex = -1
+           }
+           else{
+           const contactVal = {name:contactName, num:number}
+           contactList.push(contactVal)
+           }
+           document.getElementById('contactName').value = ""
+           document.getElementById('number').value = ""
+        //    alert("Contact saved")
+        }    
+        
+        function displayData(){
+            let displayContact = contactList.map((ele, index)=>`${ele.name} ${ele.num} <button onclick="editContact(${index})">Edit</button> <button onclick="deleteContact(${index})">Delete</button>`).join('<br>')
+            console.log(displayContact)
+            document.querySelector('.showContact').innerHTML = `${displayContact}`
+        }
+        function editContact(ind){
+            document.getElementById('contactName').value = contactList[ind].name
+            document.getElementById('number').value = contactList[ind].num
+            editIndex = ind
+
+        }  
+        
+        function deleteContact(ind){
+            contactList.splice(ind,1)
+            alert('press showContact button to refresh list ')
+        }
+    </script>
+</body>
+</html>
